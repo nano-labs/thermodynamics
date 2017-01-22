@@ -1,5 +1,7 @@
 # Thermodynamics
 
+![N](https://github.com/nano-labs/thermodynamics/blob/master/sample.png)
+
 ## Library to help on thermodynamics calculations
 
 It's a compilation of a few TD tables and some object abstraction to help you to work with.
