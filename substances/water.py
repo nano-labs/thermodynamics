@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 """Chemical substances and its properties."""
 
-from tables import SaturatedWaterTable
+from substances.tables import SaturatedWaterTable
 from units import UndefinedUnit, GenericUnit, UnitMismatch
 from units.temperature import Celcius
 from units.pressure import KiloPascal
 from units.energy import KJPerKg
+from units.amount import CubicMeterPerKiloGram
 
 __dir__ = ['SaturationLineWater', 'SaturatedWater', 'SaturatedSteam']
 __all__ = __dir__
@@ -43,8 +44,8 @@ class SaturationLineWater(object):
         data = self._find_state(property_state)
         self.temperature = Celcius(data[0])
         self.pressure = KiloPascal(data[1])
-        self.volume_liquid = data[2]
-        self.volume_vapor = data[3]
+        self.volume_liquid = CubicMeterPerKiloGram(data[2])
+        self.volume_vapor = CubicMeterPerKiloGram(data[3])
         self.energy_liquid = KJPerKg(data[4])
         self.energy_vaporisation = KJPerKg(data[5])
         self.energy_vapor = KJPerKg(data[6])
@@ -78,7 +79,7 @@ class SaturatedWater(SaturationLineWater):
         data = self._find_state(property_state)
         self.temperature = Celcius(data[0])
         self.pressure = KiloPascal(data[1])
-        self.volume = data[2]
+        self.volume = CubicMeterPerKiloGram(data[2])
         self.energy = KJPerKg(data[4])
         self.enthalpy = KJPerKg(data[7])
         self.entropy = data[10]
@@ -94,7 +95,7 @@ class SaturatedSteam(SaturationLineWater):
         data = self._find_state(property_state)
         self.temperature = Celcius(data[0])
         self.pressure = KiloPascal(data[1])
-        self.volume = data[3]
+        self.volume = CubicMeterPerKiloGram(data[3])
         self.energy = KJPerKg(data[6])
         self.enthalpy = KJPerKg(data[9])
         self.entropy = data[12]

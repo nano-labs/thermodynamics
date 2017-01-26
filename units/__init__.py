@@ -40,7 +40,9 @@ class GenericUnit(object):
 
     def __unicode__(self):
         """Unicode representation."""
-        return u"%.2f %s" % (self.value, self.symbol)
+        if self.value >= 0.01:
+            return u"%.2f %s" % (self.value, self.symbol)
+        return u"%f %s" % (self.value, self.symbol)
 
     def __str__(self):
         """String representation."""

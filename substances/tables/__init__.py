@@ -44,7 +44,7 @@ class Table(object):
 
 class SaturatedWaterTable(Table):
 
-    table_file = "tables/saturated_water.sqlite"
+    table_file = "substances/tables/saturated_water.sqlite"
     table_name = "saturated_water"
 
     @classmethod
