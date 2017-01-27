@@ -4,7 +4,8 @@
 
 from units import GenericUnit
 
-__all__ = []
+__all__ = ["CubicMeter", "CubicMeterPerKiloGram", "Liter", "KiloGram",
+           "CubicMeterPerKiloGram"]
 __dir__ = __all__
 
 
@@ -53,8 +54,26 @@ class Volume(GenericUnit):
 
     @property
     def m3(self):
-        """Pressure using Pascals."""
-        return CubicMeter(self.base_value)
+        """Volume using cubic meters."""
+        return CubicMeter(self.base_value / 1000.0)
+
+    @property
+    def liter(self):
+        """Volume using liters."""
+        return Liter(self.base_value)
+
+
+class Liter(Volume):
+    """Liter unit."""
+
+    symbol = u"l"
+
+    def __init__(self, value):
+        """Create a volume instance started by liters."""
+        if isinstance(value, Volume):
+            value = value.base_value
+        self.base_value = float(value)
+        self.value = self.base_value
 
 
 class CubicMeter(Volume):
@@ -65,9 +84,9 @@ class CubicMeter(Volume):
     def __init__(self, value):
         """Create a volume instance started by cubic meters."""
         if isinstance(value, Volume):
-            value = value.base_value
-        self.base_value = float(value)
-        self.value = self.base_value
+            value = Liter(value.base_value).m3.value
+        self.base_value = value * 1000.0
+        self.value = float(value)
 
 
 class Mass(GenericUnit):
@@ -77,8 +96,13 @@ class Mass(GenericUnit):
 
     @property
     def kilogram(self):
-        """Pressure using Pascals."""
+        """Mass using Kilograms."""
         return KiloGram(self.base_value)
+
+    @property
+    def kg(self):
+        """Mass using Kilograms."""
+        return self.kilogram
 
 
 class KiloGram(Mass):

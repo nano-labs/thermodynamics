@@ -3,7 +3,7 @@
 """Abstraction of phisical properties and it's units."""
 
 
-class UnitNotSuported(Exception):
+class UnitNotSupported(Exception):
     pass
 
 
@@ -36,7 +36,7 @@ class GenericUnit(object):
 
     def __init__(self, *args, **kwargs):
         """Can't instance."""
-        raise UnitNotSuported("Cannot instance %s directly." % self.__class__)
+        raise UnitNotSupported("Cannot instance %s directly." % self.__class__)
 
     def __unicode__(self):
         """Unicode representation."""

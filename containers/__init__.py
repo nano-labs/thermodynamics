@@ -3,6 +3,16 @@
 """Conteiners for substances."""
 
 from units.amount import Volume, Mass
+from properties import Enthalpy
+
+
+class UnsuportedOperation(Exception):
+    """Cannot operate different substances or containers."""
+
+    def __init__(self):
+        """Set message to raise."""
+        message = "Can operate equal substances or containers only."
+        super(UnsuportedOperation, self).__init__(message)
 
 
 class Flask(object):
@@ -31,6 +41,32 @@ class Flask(object):
     def _update_by_mass(self, mass):
         """Update all attributes due volume changes."""
         self.mass = mass
-        self.volume = self.substance.volume * mass
+        self.volume = (self.substance.volume * mass).liter
         self.energy = self.substance.energy * mass
-        self.enthalpy = self.substance.enthalpy * mass
+        self.enthalpy = Enthalpy(self.substance.enthalpy * mass)
+
+    def __unicode__(self):
+        """Unicode representation."""
+        return u"Flask with %s of %s" % (self.mass, self.substance)
+
+    def __str__(self):
+        """String representation."""
+        return self.__unicode__().encode("utf-8")
+
+    def __repr__(self):
+        """Short representation."""
+        return self.__str__()
+
+    def __add__(self, added):
+        """Add flasks of same substance."""
+        if isinstance(added, self.__class__):
+            if added.substance.__class__ == self.substance.__class__:
+                total_mass = self.mass + added.mass
+                total_enthalpy = self.enthalpy + added.enthalpy
+                specific_enthalpy = total_enthalpy / total_mass
+                new_substance = self.substance.__class__(specific_enthalpy)
+                return Flask(new_substance, total_mass)
+            else:
+                raise UnsuportedOperation()
+        else:
+            raise UnsuportedOperation()
